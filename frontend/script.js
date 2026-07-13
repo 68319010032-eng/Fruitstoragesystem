@@ -26,16 +26,38 @@ function renderFruits(fruits) {
     return;
   }
 
-  listEl.innerHTML = fruits.map(f => `
-    <div class="fruit-card">
-      <h3>${f.name}</h3>
-      <p>หมวดหมู่: ${f.category}</p>
-      <p>จำนวน: ${f.quantity} ${f.unit}</p>
-      <p>ที่เก็บ: ${f.storage_location}</p>
-      <p>หมดอายุ: ${f.expiry_date ? f.expiry_date.split('T')[0] : '-'}</p>
-      <p>สถานะ: ${f.status}</p>
-    </div>
-  `).join('');
+  const today = new Date();
+
+  listEl.innerHTML = fruits.map(f => {
+    const isExpiringSoon = f.expiry_date &&
+      (new Date(f.expiry_date) - today) / (1000 * 60 * 60 * 24) <= 3;
+
+    return `
+      <div class="fruit-card ${isExpiringSoon ? 'expiring' : ''}">
+        <h3>${f.name}</h3>
+        <p>หมวดหมู่: ${f.category}</p>
+        <p>จำนวน: ${f.quantity} ${f.unit}</p>
+        <p>ที่เก็บ: ${f.storage_location}</p>
+        <p>หมดอายุ: ${f.expiry_date ? f.expiry_date.split('T')[0] : '-'} ${isExpiringSoon ? '⚠️' : ''}</p>
+        <p>สถานะ: ${f.status}</p>
+        <button class="delete-btn" data-id="${f.id}">ลบ</button>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => deleteFruit(btn.dataset.id));
+  });
+}
+
+async function deleteFruit(id) {
+  if (!confirm('ยืนยันลบผลไม้นี้?')) return;
+  try {
+    await fetch(`${API_URL}/api/fruits/${id}`, { method: 'DELETE' });
+    loadFruits();
+  } catch (err) {
+    alert('ลบไม่สำเร็จ: ' + err.message);
+  }
 }
 
 document.getElementById('filter-category').addEventListener('change', loadFruits);
