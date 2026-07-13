@@ -46,6 +46,9 @@ const getExpiringSoon = async (req, res) => {
 // GET /api/fruits/:id
 const getFruitById = async (req, res) => {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(400).json({ error: 'id ต้องเป็นตัวเลข' });
+    }
     const { rows } = await pool.query(
       'SELECT * FROM fruits WHERE id = $1', [req.params.id]
     );
@@ -70,6 +73,12 @@ const createFruit = async (req, res) => {
     } = req.body;
 
     if (!name) return res.status(400).json({ error: 'กรุณาระบุชื่อผลไม้ (name)' });
+    if (isNaN(Number(quantity)) || Number(quantity) < 0) {
+      return res.status(400).json({ error: 'quantity ต้องเป็นตัวเลขและไม่ติดลบ' });
+    }
+    if (expiry_date && isNaN(Date.parse(expiry_date))) {
+      return res.status(400).json({ error: 'expiry_date รูปแบบไม่ถูกต้อง (ใช้ YYYY-MM-DD)' });
+    }
 
     const { rows } = await pool.query(
       `INSERT INTO fruits (name, category, quantity, unit, storage_location, expiry_date, status)
@@ -85,6 +94,9 @@ const createFruit = async (req, res) => {
 // PUT /api/fruits/:id
 const updateFruit = async (req, res) => {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(400).json({ error: 'id ต้องเป็นตัวเลข' });
+    }
     const {
       name,
       category = 'other',
@@ -112,6 +124,9 @@ const updateFruit = async (req, res) => {
 // DELETE /api/fruits/:id
 const deleteFruit = async (req, res) => {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(400).json({ error: 'id ต้องเป็นตัวเลข' });
+    }
     const { rows } = await pool.query(
       'DELETE FROM fruits WHERE id=$1 RETURNING *', [req.params.id]
     );
