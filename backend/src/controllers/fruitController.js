@@ -1,9 +1,9 @@
 const pool = require('../db');
 
-// GET /api/fruits?category=&storage_location=
+// GET /api/fruits?category=&storage_location=&sort=&order=
 const getAllFruits = async (req, res) => {
   try {
-    const { category = '', storage_location = '' } = req.query;
+    const { category = '', storage_location = '', sort = 'created_at', order = 'desc' } = req.query;
     const params = [];
     let where = 'WHERE 1=1';
 
@@ -16,8 +16,13 @@ const getAllFruits = async (req, res) => {
       where += ` AND storage_location = $${params.length}`;
     }
 
+    const allowedSort  = ['created_at', 'name', 'quantity', 'expiry_date'];
+    const allowedOrder = ['asc', 'desc'];
+    const sortCol = allowedSort.includes(sort) ? sort : 'created_at';
+    const sortOrd = allowedOrder.includes(order.toLowerCase()) ? order : 'desc';
+
     const { rows } = await pool.query(
-      `SELECT * FROM fruits ${where} ORDER BY created_at DESC`,
+      `SELECT * FROM fruits ${where} ORDER BY ${sortCol} ${sortOrd}`,
       params
     );
     res.json(rows);
