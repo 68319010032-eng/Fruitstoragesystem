@@ -2,8 +2,15 @@ const API_URL = 'http://localhost:3001';
 
 async function loadFruits() {
   const listEl = document.getElementById('fruit-list');
+  const category = document.getElementById('filter-category').value;
+  const location = document.getElementById('filter-location').value;
+
+  const params = new URLSearchParams();
+  if (category) params.append('category', category);
+  if (location) params.append('storage_location', location);
+
   try {
-    const res = await fetch(`${API_URL}/api/fruits`);
+    const res = await fetch(`${API_URL}/api/fruits?${params}`);
     const fruits = await res.json();
     renderFruits(fruits);
   } catch (err) {
@@ -30,5 +37,8 @@ function renderFruits(fruits) {
     </div>
   `).join('');
 }
+
+document.getElementById('filter-category').addEventListener('change', loadFruits);
+document.getElementById('filter-location').addEventListener('change', loadFruits);
 
 loadFruits();
