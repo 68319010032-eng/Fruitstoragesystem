@@ -26,6 +26,23 @@ const getAllFruits = async (req, res) => {
   }
 };
 
+// GET /api/fruits/expiring-soon?days=3
+const getExpiringSoon = async (req, res) => {
+  try {
+    const days = parseInt(req.query.days) || 3;
+    const { rows } = await pool.query(
+      `SELECT * FROM fruits
+       WHERE expiry_date IS NOT NULL
+         AND expiry_date <= (CURRENT_DATE + $1 * INTERVAL '1 day')
+       ORDER BY expiry_date ASC`,
+      [days]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // GET /api/fruits/:id
 const getFruitById = async (req, res) => {
   try {
@@ -52,13 +69,7 @@ const createFruit = async (req, res) => {
       status = 'in_stock',
     } = req.body;
 
-     if (!name) return res.status(400).json({ error: 'กรุณาระบุชื่อผลไม้ (name)' });
-    if (isNaN(Number(quantity)) || Number(quantity) < 0) {
-      return res.status(400).json({ error: 'quantity ต้องเป็นตัวเลขและไม่ติดลบ' });
-    }
-    if (expiry_date && isNaN(Date.parse(expiry_date))) {
-      return res.status(400).json({ error: 'expiry_date รูปแบบไม่ถูกต้อง (ใช้ YYYY-MM-DD)' });
-    }
+    if (!name) return res.status(400).json({ error: 'กรุณาระบุชื่อผลไม้ (name)' });
 
     const { rows } = await pool.query(
       `INSERT INTO fruits (name, category, quantity, unit, storage_location, expiry_date, status)
@@ -113,6 +124,7 @@ const deleteFruit = async (req, res) => {
 
 module.exports = {
   getAllFruits,
+  getExpiringSoon,
   getFruitById,
   createFruit,
   updateFruit,
