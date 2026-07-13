@@ -1,0 +1,38 @@
+ <main>
+    //form for adding new fruit
+    <form id="add-form">
+      <input type="text" id="input-name" placeholder="ชื่อผลไม้" required>
+      <select id="input-category">
+        <option value="tropical">tropical</option>
+        <option value="citrus">citrus</option>
+        <option value="pome">pome</option>
+        <option value="berry">berry</option>
+        <option value="other">other</option>
+      </select>
+      <input type="number" id="input-quantity" placeholder="จำนวน" min="0" required>
+      <input type="date" id="input-expiry">
+      <button type="submit">+ เพิ่มผลไม้</button>
+    </form>
+
+    //filter for filtering fruits
+    <div class="filters">
+      <select id="filter-category">
+        <option value="">ทุกหมวดหมู่</option>
+        <option value="tropical">tropical</option>
+        <option value="citrus">citrus</option>
+        <option value="pome">pome</option>
+        <option value="berry">berry</option>
+        <option value="other">other</option>
+      </select>
+
+      <select id="filter-location">
+        <option value="">ทุกที่เก็บ</option>
+        <option value="cold_room">cold_room</option>
+        <option value="room_temp">room_temp</option>
+      </select>
+    </div>
+
+    <div id="fruit-list">
+      <p>กำลังโหลดข้อมูล...</p>
+    </div>
+  </main>
