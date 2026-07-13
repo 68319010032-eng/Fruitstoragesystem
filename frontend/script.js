@@ -40,5 +40,28 @@ function renderFruits(fruits) {
 
 document.getElementById('filter-category').addEventListener('change', loadFruits);
 document.getElementById('filter-location').addEventListener('change', loadFruits);
+document.getElementById('add-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const body = {
+    name: document.getElementById('input-name').value,
+    category: document.getElementById('input-category').value,
+    quantity: Number(document.getElementById('input-quantity').value),
+    expiry_date: document.getElementById('input-expiry').value || null,
+  };
+
+  try {
+    const res = await fetch(`${API_URL}/api/fruits`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error('เพิ่มข้อมูลไม่สำเร็จ');
+    e.target.reset();
+    loadFruits();
+  } catch (err) {
+    alert(err.message);
+  }
+});
 
 loadFruits();
