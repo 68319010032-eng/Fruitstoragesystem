@@ -7,6 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Request logger
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} ${req.method} ${req.path}`);
+  next();
+});
+
 // Health Check
 app.get('/health', (req, res) => {
   res.json({
@@ -18,5 +24,10 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/fruits', fruitRoutes);
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'ไม่พบ endpoint นี้' });
+});
 
 module.exports = app;
