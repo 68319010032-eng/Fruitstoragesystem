@@ -52,7 +52,13 @@ const createFruit = async (req, res) => {
       status = 'in_stock',
     } = req.body;
 
-    if (!name) return res.status(400).json({ error: 'กรุณาระบุชื่อผลไม้ (name)' });
+     if (!name) return res.status(400).json({ error: 'กรุณาระบุชื่อผลไม้ (name)' });
+    if (isNaN(Number(quantity)) || Number(quantity) < 0) {
+      return res.status(400).json({ error: 'quantity ต้องเป็นตัวเลขและไม่ติดลบ' });
+    }
+    if (expiry_date && isNaN(Date.parse(expiry_date))) {
+      return res.status(400).json({ error: 'expiry_date รูปแบบไม่ถูกต้อง (ใช้ YYYY-MM-DD)' });
+    }
 
     const { rows } = await pool.query(
       `INSERT INTO fruits (name, category, quantity, unit, storage_location, expiry_date, status)
