@@ -35,12 +35,16 @@ function renderFruits(fruits) {
 
     return `
       <div class="fruit-card ${isExpiringSoon ? 'expiring' : ''}" data-storage="${f.storage_location}">
-        <h3>${f.name}</h3>
-        <p>หมวดหมู่: ${f.category}</p>
-        <p>จำนวน: ${f.quantity} ${f.unit}</p>
-        <p>ที่เก็บ: ${f.storage_location}</p>
-        <p>หมดอายุ: ${f.expiry_date ? f.expiry_date.split('T')[0] : '-'} ${isExpiringSoon ? '⚠️' : ''}</p>
-        <p>สถานะ: ${f.status}</p>
+        <div>
+          <h3>${f.name}</h3>
+          <div class="info-group">
+            <p>หมวดหมู่ <span>${f.category}</span></p>
+            <p>จำนวน <span>${f.quantity} ${f.unit}</span></p>
+            <p>ที่เก็บ <span>${f.storage_location}</span></p>
+            <p>หมดอายุ <span>${f.expiry_date ? f.expiry_date.split('T')[0] : '-'} ${isExpiringSoon ? '⚠️' : ''}</span></p>
+            <p>สถานะ <span>${f.status}</span></p>
+          </div>
+        </div>
         <div class="card-actions">
           <button class="edit-btn" data-id="${f.id}">แก้ไข</button>
           <button class="delete-btn" data-id="${f.id}">ลบ</button>
