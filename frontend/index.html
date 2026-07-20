@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍎 Fruit Storage System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🍎 Fruit Storage System</h1>
+    <p>ระบบจัดการคลังผลไม้</p>
+  </header>
+
+  <main>
+    <!-- form for adding new fruit -->
+    <form id="add-form">
+      <input type="text" id="input-name" placeholder="ชื่อผลไม้" required>
+      <select id="input-category">
+        <option value="tropical">tropical</option>
+        <option value="citrus">citrus</option>
+        <option value="pome">pome</option>
+        <option value="berry">berry</option>
+        <option value="other">other</option>
+      </select>
+      <input type="number" id="input-quantity" placeholder="จำนวน" min="0" required>
+      <input type="date" id="input-expiry">
+      <button type="submit" id="submit-btn">+ เพิ่มผลไม้</button>
+    </form>
+
+    <!-- filter for filtering fruits -->
+    <div class="filters">
+      <select id="filter-category">
+        <option value="">ทุกหมวดหมู่</option>
+        <option value="tropical">tropical</option>
+        <option value="citrus">citrus</option>
+        <option value="pome">pome</option>
+        <option value="berry">berry</option>
+        <option value="other">other</option>
+      </select>
+
+      <select id="filter-location">
+        <option value="">ทุกที่เก็บ</option>
+        <option value="cold_room">cold_room</option>
+        <option value="room_temp">room_temp</option>
+      </select>
+    </div>
+
+    <div id="fruit-list">
+      <p>กำลังโหลดข้อมูล...</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --cream:       #FDFBF7;
+  --cream-dark:  #F4EFE6;
+  --paper:       #FFFFFF;
+  --leaf:        #2E523A;
+  --leaf-light:  #437453;
+  --leaf-dark:   #1A3323;
+  --citrus:      #D96B27;
+  --citrus-light:#F58E49;
+  --wood:        #7A5233;
+  --wood-light:  #D5C3B1;
+  --ink:         #231E18;
+  --ink-soft:    #655C52;
+  --ink-muted:   #9C9286;
+  --danger:      #B53A26;
+  --danger-bg:   #FFF2EE;
+  
+  /* Shared values */
+  --radius-lg:   16px;
+  --radius-md:   10px;
+  --radius-sm:   6px;
+  --shadow-sm:   0 2px 8px rgba(35, 30, 24, 0.04);
+  --shadow-md:   0 8px 24px rgba(35, 30, 24, 0.06);
+  --shadow-lg:   0 16px 40px rgba(35, 30, 24, 0.1);
+  --transition:  all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(46,82,58,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(217,107,39,0.04) 0%, transparent 50%);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   HEADER SECTION
+   ========================================== */
+header {
+  background: var(--leaf-dark);
+  color: var(--cream);
+  padding: 60px 24px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+header h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+  position: relative;
+  color: #FFFDF9;
+}
+
+header p {
+  margin-top: 8px;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--wood-light);
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+/* ==========================================
+   MAIN LAYOUT
+   ========================================== */
+main {
+  max-width: 1040px;
+  margin: -30px auto 60px;
+  padding: 0 24px;
+  position: relative;
+}
+
+/* ==========================================
+   FORMS & INPUTS
+   ========================================== */
+#add-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid rgba(122, 82, 51, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-md);
+}
+
+/* Reusable input & select styles */
+#add-form input, 
+#add-form select,
+.filters select {
+  font-family: 'Inter', sans-serif;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--cream-dark);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+  flex: 1 1 180px;
+  transition: var(--transition);
+  appearance: none; /* ลบลูกศรเดิม */
+}
+
+/* สำหรับ Dropdown ที่ต้องการลูกศรใหม่ที่สวยงาม */
+#add-form select,
+.filters select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23655C52'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+#add-form input::placeholder {
+  color: var(--ink-muted);
+}
+
+#add-form input:focus, 
+#add-form select:focus,
+.filters select:focus {
+  outline: none;
+  border-color: var(--leaf-light);
+  background: var(--paper);
+  box-shadow: 0 0 0 4px rgba(67, 116, 83, 0.12);
+}
+
+/* Buttons */
+#add-form button {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--citrus);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 13px 28px;
+  cursor: pointer;
+  transition: var(--transition);
+  flex: 0 0 auto;
+  box-shadow: 0 4px 12px rgba(217, 107, 39, 0.2);
+}
+
+#add-form button:hover {
+  background: var(--citrus-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(217, 107, 39, 0.3);
+}
+
+#add-form button:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================
+   FILTERS SECTION
+   ========================================== */
+.filters { 
+  display: flex; 
+  gap: 12px; 
+  margin-bottom: 28px; 
+}
+
+.filters select {
+  flex: 0 1 200px;
+  background-color: var(--paper);
+  border-color: rgba(122, 82, 51, 0.15);
+  font-size: 0.88rem;
+  padding: 10px 16px;
+  border-radius: 30px; /* ทรงโค้งมนแบบโมเดิร์น */
+  box-shadow: var(--shadow-sm);
+}
+
+.filters select:hover {
+  border-color: var(--wood-light);
+}
+
+/* ==========================================
+   FRUIT CARDS GRID
+   ========================================== */
+#fruit-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+#fruit-list > p {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--ink-muted);
+  font-style: italic;
+  padding: 60px 0;
+  font-size: 1.05rem;
+}
+
+.fruit-card {
+  background: var(--paper);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(122, 82, 51, 0.06);
+  border-top: 4px solid var(--leaf); /* เปลี่ยนมาเน้นที่ขอบบนให้ดูโมเดิร์นและเป็นระเบียบขึ้น */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition);
+}
+
+.fruit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.fruit-card[data-storage="room_temp"] { 
+  border-top-color: var(--citrus); 
+}
+
+.fruit-card h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--ink);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.fruit-card .info-group {
+  margin-bottom: 16px;
+}
+
+.fruit-card p { 
+  font-size: 0.9rem; 
+  margin: 6px 0; 
+  color: var(--ink-soft); 
+  display: flex;
+  justify-content: space-between;
+}
+
+.fruit-card p span {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* Expiring Condition */
+.fruit-card.expiring {
+  border-top-color: var(--danger);
+  background: linear-gradient(180deg, var(--danger-bg) 0%, var(--paper) 80px);
+}
+
+/* Delete Button */
+.delete-btn {
+  margin-top: auto;
+  background: transparent;
+  color: var(--danger);
+  border: 1.5px solid rgba(181, 58, 38, 0.3);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition);
+  width: 100%;
+}
+
+.delete-btn:hover { 
+  background: var(--danger); 
+  border-color: var(--danger);
+  color: white; 
+  box-shadow: 0 4px 12px rgba(181, 58, 38, 0.15);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+@media (max-width: 600px) {
+  header { padding: 45px 20px 35px; }
+  header h1 { font-size: 2rem; }
+  
+  main { margin: -15px auto 40px; padding: 0 16px; }
+  
+  #add-form { 
+    padding: 18px;
+    flex-direction: column; 
+    align-items: stretch; 
+  }
+  
+  #add-form input, 
+  #add-form select,
+  #add-form button { 
+    flex: 1 0 auto;
+    width: 100%; 
+  }
+  
+  .filters {
+    flex-direction: column;
+  }
+  .filters select {
+    flex: 1 0 auto;
+    width: 100%;
+  }
+
+  #fruit-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.edit-btn {
+  background: transparent;
+  color: var(--leaf);
+  border: 1.5px solid var(--leaf);
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.edit-btn:hover {
+  background: var(--leaf);
+  color: white;
+}
+}
