@@ -1,4 +1,5 @@
 const API_URL = 'http://localhost:3001';
+let editingId = null;
 
 async function loadFruits() {
   const listEl = document.getElementById('fruit-list');
@@ -33,14 +34,17 @@ function renderFruits(fruits) {
       (new Date(f.expiry_date) - today) / (1000 * 60 * 60 * 24) <= 3;
 
     return `
-      <div class="fruit-card ${isExpiringSoon ? 'expiring' : ''}">
+      <div class="fruit-card ${isExpiringSoon ? 'expiring' : ''}" data-storage="${f.storage_location}">
         <h3>${f.name}</h3>
         <p>หมวดหมู่: ${f.category}</p>
         <p>จำนวน: ${f.quantity} ${f.unit}</p>
         <p>ที่เก็บ: ${f.storage_location}</p>
         <p>หมดอายุ: ${f.expiry_date ? f.expiry_date.split('T')[0] : '-'} ${isExpiringSoon ? '⚠️' : ''}</p>
         <p>สถานะ: ${f.status}</p>
-        <button class="delete-btn" data-id="${f.id}">ลบ</button>
+        <div class="card-actions">
+          <button class="edit-btn" data-id="${f.id}">แก้ไข</button>
+          <button class="delete-btn" data-id="${f.id}">ลบ</button>
+        </div>
       </div>
     `;
   }).join('');
@@ -48,6 +52,31 @@ function renderFruits(fruits) {
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', () => deleteFruit(btn.dataset.id));
   });
+
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    const fruit = fruits.find(f => f.id === Number(btn.dataset.id));
+    btn.addEventListener('click', () => startEdit(fruit));
+  });
+}
+
+function startEdit(fruit) {
+  editingId = fruit.id;
+
+  document.getElementById('input-name').value = fruit.name;
+  document.getElementById('input-category').value = fruit.category;
+  document.getElementById('input-quantity').value = fruit.quantity;
+  document.getElementById('input-expiry').value = fruit.expiry_date
+    ? fruit.expiry_date.split('T')[0]
+    : '';
+
+  document.getElementById('submit-btn').textContent = '💾 บันทึกการแก้ไข';
+  document.getElementById('add-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelEdit() {
+  editingId = null;
+  document.getElementById('add-form').reset();
+  document.getElementById('submit-btn').textContent = '+ เพิ่มผลไม้';
 }
 
 async function deleteFruit(id) {
@@ -60,8 +89,6 @@ async function deleteFruit(id) {
   }
 }
 
-document.getElementById('filter-category').addEventListener('change', loadFruits);
-document.getElementById('filter-location').addEventListener('change', loadFruits);
 document.getElementById('add-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -73,17 +100,24 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
   };
 
   try {
-    const res = await fetch(`${API_URL}/api/fruits`, {
-      method: 'POST',
+    const url = editingId ? `${API_URL}/api/fruits/${editingId}` : `${API_URL}/api/fruits`;
+    const method = editingId ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (!res.ok) throw new Error('เพิ่มข้อมูลไม่สำเร็จ');
-    e.target.reset();
+    if (!res.ok) throw new Error(editingId ? 'แก้ไขข้อมูลไม่สำเร็จ' : 'เพิ่มข้อมูลไม่สำเร็จ');
+
+    cancelEdit();
     loadFruits();
   } catch (err) {
     alert(err.message);
   }
 });
+
+document.getElementById('filter-category').addEventListener('change', loadFruits);
+document.getElementById('filter-location').addEventListener('change', loadFruits);
 
 loadFruits();

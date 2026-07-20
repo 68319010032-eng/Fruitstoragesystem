@@ -332,4 +332,27 @@ main {
     grid-template-columns: 1fr;
     gap: 16px;
   }
+  .card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.edit-btn {
+  background: transparent;
+  color: var(--leaf);
+  border: 1.5px solid var(--leaf);
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.edit-btn:hover {
+  background: var(--leaf);
+  color: white;
+}
 }
